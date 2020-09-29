@@ -22,8 +22,13 @@ using namespace std;
 //define 
 #define BOOK_SYSTEM_RESET_CHANGE_PASSWD_COUNT  (10)  //允许重置密码出错的上限
 
+
+//屏蔽警告
+#pragma warning( disable : 4996 )
+
 //class define
 
+//#if 0
 class Book
 {
 protected:
@@ -196,13 +201,42 @@ public:
 
 };
 
+//
+int User::User_Number = 0;
+
+
+
+void User::Setname(string name1)
+{
+    name = name1;
+}
+void User::Setkey(string key1)
+{
+    key = key1;
+}
+
+int User::Judge()
+{
+    if (is_Librarian == 1)
+    {
+        return 5;
+    }
+    else if (is_Admin == 1)
+    {
+        return 6;
+    }
+    else
+    {
+        return 7;
+    }
+}
 void User::key_change(User *u)
 {
     int find = 0;
     string key, key1;
     for (int i = 0;i < User::User_Number;i++)
     {
-        if (u[i].Getname == LogName)
+        if (u[i].Getname() == LogName)
         {
             find = i;
             break;
@@ -269,4 +303,96 @@ void User::key_change(User *u)
             continue;
         }
     }
+}
+
+
+//
+class Log
+{
+public:
+    User tp;//存储登陆成功的用户信息  ,单用户
+    int num;//存储当前用户信息对应的User类下标
+    void Login(User* p);  //登陆
+    void SignIn(User* p); //注册
+    Log()
+    {
+        num = 0;
+    };
+
+    bool is_Log; //判断是否登陆成功
+
+};
+
+//先注册
+void Log::SignIn(User* p)
+{
+
+}
+
+//登陆
+void Log::Login(User* p)
+{
+    string a, b;
+    int flag = 0;
+
+    cout << "请输入账号："<<endl;
+    cin >> a;
+    cout << "请输入密码" << endl;
+    cin >> b;
+
+    for (int i = 0;i < User::User_Number;i++)
+    {
+        if (a == p[i].Getname() && b == p[i].Getkey())
+        {
+            tp.SetIdentity(p[i].GetisAdmin(), p[i].GetisLibrarian(), p[i].GetisReader());
+            flag = 1; //标记本次验证通过
+            tp.Setname(a);
+            tp.Setkey(b);
+            num = i;
+        }
+    }
+
+    if (flag)
+    {
+        if (tp.Judge() == 7)
+        {
+            LogName = tp.Getname();
+            cout << "登录成功！" << endl;
+            is_Log = true;
+            cout << "尊敬的读者" << tp.Getname() << "，您好" << endl;
+
+        }
+        else if (tp.Judge() == 5)
+        {
+            LogName = tp.Getname();
+            cout << "登陆成功！" << endl;
+            is_Log = true;
+            cout << "尊敬的图书管理员" << tp.Getname() << ",您好！" << endl;
+        }
+        else if (tp.Judge() == 6)
+        {
+            LogName = tp.Getname();
+            cout << "登陆成功！" << endl;
+            is_Log = true;
+            cout << "尊敬的系统管理员" << tp.Getname() << ",您好！" << endl;
+        }
+    }
+    else 
+    {
+        cout << "账号或密码错误！" << endl;
+        is_Log = false; 
+    }
+
+
+}
+
+
+//#endif
+int main()
+{
+
+
+    printf("123/n\n123");
+    system("pause");
+    return 0;
 }
