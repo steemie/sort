@@ -12,7 +12,7 @@
 
 // inlcude
 #include<iostream>
-#include<iostream>  //file in and out
+#include<fstream>  //file in and out
 #include<iomanip>  //control the style of output ***
 #include<string>
 #include<time.h>   //time realtion
@@ -481,13 +481,101 @@ int Librarian::Librarian_Number = 1;
 
 void Librarian::Book_Add(Book *B) //增加图书
 {
+    string aa;
+    cout<< "---------------添加图书---------------" << endl;
 
+    while (1)
+    {
+        cin >> B[Book::Book_Number];   //重载了>>输入
+        ofstream bookmessage("Bookmessage.txt", ios::app);
+        if (bookmessage.is_open())
+        {
+            bookmessage << getCurrentSystemTime();
+            bookmessage << "操作：增加图书" << endl;
+            bookmessage << B[Book::Book_Number] << endl;
+            bookmessage.close();
+        }
+
+        Book::Book_Number++;
+        cout << "录入成功！" << endl;
+        aa = cin.get();
+        cout<<"按任意键继续录入(输入'0'可返回主菜单)，";
+        if (aa == "0")
+        {
+            break;
+        }
+    }
 }
 
 void Librarian::Book_Del(Book *B) //删除图书
 {
+    cout << "---------------删除图书---------------" << endl;
+    string a;
+    if (Book::Book_Number == 0)
+    {
+        cout << "目前无图书,请先添加图书!" << endl;
+    }
+    else
+    {
+        cout << "请输入图书编号或书名";
+        cin >> a;
+        int flag = 0, find = 0;
+        for (int j = 0;j < Book::Book_Number;j++)
+        {
+            if (a == B[j].GetCode() || a == B[j].GetName())
+            {
+                flag = 1;
+                find = j;
+                break;
+            }
+        }
+
+        if (flag == 1)
+        {
+            char a;
+            cout << "已经找到图书，对应编号为：" << B[find].GetCode() << "书名为：" << B[find].GetName()<< "，是否选择删除？(y or n)" <<endl;
+            cin >> a;
+
+            if (a == 'y')
+            {
+                //把要删除的信息先备份，否则，删后获取到的是下一条信息
+                Book book_t(B[find]);       //是否定义拷贝
+                for (int k = find;k < Book::Book_Number;k++)
+                {
+                    if (k == Book::Book_Number - 1)
+                    {
+                        Book::Book_Number--;
+                        break;
+                    }
+
+                    B[k] = B[k + 1];
+                }
+
+                ofstream bookmessage("Bookmessage.txt", ios::app);
+                if (bookmessage.is_open())
+                {
+                    bookmessage << getCurrentSystemTime();
+                    bookmessage << "操作:删除图书 " << endl;
+                    bookmessage << B[find] << endl;         //查询到的并非是当前删除的数据
+                    bookmessage.close();
+                }
+
+                cout << "删除成功！" << endl;
+            }
+            else
+            {
+                cout << "已取消删除。";
+            }
+        
+        }
+        else
+        {
+            cout << "图书不存在，请确认是否已经录入。" << endl;
+        }
+    }
 
 }
+
 void Librarian::Book_Alter(Book *B) //修改图书
 {
 
