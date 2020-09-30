@@ -326,6 +326,53 @@ public:
 //先注册
 void Log::SignIn(User* p)
 {
+    int f1;
+    string a, b, bb;
+    while (1)
+    {
+        f1 = 1;
+        cout << "输入用户名：";
+        cin >> a;
+
+        for (int i = 0; i <= User::User_Number;i++)
+        {
+            if (p[i].Getname() == a)
+            {
+                cout << "用户名已存在，请重新输入." << endl;
+                f1 = 0;
+            }
+        }
+
+        if (f1 == 0)
+        {
+
+        }
+
+        if (f1 == 1)
+        {
+            break;
+        }
+    }
+
+    //设置密码
+    while (1)
+    {
+        cout << "请设置密码:";
+        cin >> b;
+        cout << "再次输入密码:";
+        cin >> bb;
+        if (bb != b)
+        {
+            cout << "两次密码不一致，请重新输入." << endl;
+        }
+        if (bb == b)
+        {
+            break;
+        }
+    }
+
+    //将注册成功的用户信息存储在User类中
+    (p + User::User_Number)->Setname(a);
 
 }
 
@@ -387,6 +434,74 @@ void Log::Login(User* p)
 }
 
 
+//图书管理员
+class Librarian :public User, public Log
+{
+public:
+    static int Librarian_Number;
+    void zc(User* U, Log a, Librarian *L)
+    {
+        a.SignIn(U);
+        cout << "注册成功！" << endl;
+        Librarian_Number++;
+        U[a.num].SetIdentity(0, 1, 0);
+        SetIdentity(0, 1, 0);
+        User::name = a.tp.Getname();
+        User::key = a.tp.Getkey();
+
+        L[Librarian::Librarian_Number].Setname(a.tp.Getname());
+
+    }
+
+    Librarian()
+    {
+        SetIdentity(0, 1, 0);
+    }
+
+    Librarian(string name1, string key1, User* U)
+    {
+        U[User_Number].Setname(name1);
+        U[User_Number].Setkey(key1);
+        U[User_Number].SetIdentity(0,1,0);
+        SetIdentity(0, 1, 0);
+        U->User_Number++;
+        name = name1;
+        key = key1;
+    }
+
+    void Book_Add(Book *B); //增加图书
+    void Book_Del(Book *B); //删除图书
+    void Book_Alter(Book *B); //修改图书
+    void Book_Find(Book *B); //查找图书
+    void Book_AddUp(Book *B); //统计图书
+
+
+};
+int Librarian::Librarian_Number = 1;
+
+void Librarian::Book_Add(Book *B) //增加图书
+{
+
+}
+
+void Librarian::Book_Del(Book *B) //删除图书
+{
+
+}
+void Librarian::Book_Alter(Book *B) //修改图书
+{
+
+}
+
+void Librarian::Book_Find(Book *B) //查找图书
+{
+
+}
+
+void Librarian::Book_AddUp(Book *B) //统计图书
+{
+
+}
 //#endif
 int main()
 {
