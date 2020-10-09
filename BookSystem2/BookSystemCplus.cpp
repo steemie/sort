@@ -576,9 +576,134 @@ void Librarian::Book_Del(Book *B) //删除图书
 
 }
 
+//修改图书
+void DisplayAlter()
+{
+    cout << "请选择修改项:" << endl;
+    cout << "1-修改编号" << endl;
+    cout << "2-修改书名" << endl;
+    cout << "3-修改作者" << endl;
+    cout << "4-修改出版社" << endl;
+    cout << "5-修改单价" << endl;
+    cout << "0-退出修改" << endl;
+}
+
 void Librarian::Book_Alter(Book *B) //修改图书
 {
+    string a;
+    cout << "---------------修改图书---------------" << endl;
+    if (Book::Book_Number == 0)
+    {
+        cout << "目前无图书,请先添加图书" << endl;
+    }
+    else
+    {
+        cout << "请输入图书编号或书名";
 
+        cin >> a;
+        int flag = 0, find = 0;
+        for (int i = 0;i < Book::Book_Number;i++)
+        {
+            if (a == B[i].GetCode() || a == B[i].GetName()) //图书名字或者编号相等
+            {
+                flag = 1;
+                find = i;
+                break;
+            }
+        }
+
+        if (flag == 1)
+        {
+            //书名找到后的处理逻辑
+            char b;
+            cout << "已经找到图书，是否选择修改？(y or n)" << endl;
+            cin >> b;
+            if (b == 'y')
+            {
+                DisplayAlter();   //显示修改的选项
+                int c;
+                cin >> c;
+
+                switch (c)
+                {
+                    case 1:
+                    {
+                        while (1)
+                        {
+                            cout << "请输入修改后的编号:" << endl;
+                            int flag = 1;
+                            cin >> a;
+                            for (int l = 0;l < Book::Book_Number;l++)
+                            {
+                                if (B[l].GetCode() == a)
+                                {
+                                    flag = 0;
+                                    break;
+                                }
+                            }
+
+                            if (flag) 
+                            { 
+                                B[find].SetCode(a);
+                                cout << "已修改!" << endl;
+                                break; 
+                            }
+                            else
+                            {
+                                cout << "已存在该编号，请修改!" << endl;
+                            }
+
+                        }
+                        break;
+                    }
+                    case 2:
+                    {
+                        cout << "请输入修改后的书名:" << endl;
+                        cin >> a;B[find].SetName(a);
+                        cout << "已修改!" << endl;
+                        break;
+                    }
+                    case 3:
+                    {
+                        cout << "请输入修改后的作者名:" << endl;
+                        cin >> a;B[find].SetAuthor(a);
+                        cout << "已修改!" << endl;
+                        break;
+                    }
+                    case 4:
+                    {
+                        cout << "请输入修改后的出版社名:" << endl;
+                        cin >> a;B[find].SetPress(a);
+                        cout << "已修改!" << endl;
+                        break;
+                    }
+                    case 5:
+                    {
+                        cout << "请输入修改后的价格:" << endl;
+                        double p;
+                        cin >> p;B[find].SetPrice(p);
+                        cout << "已修改!" << endl;
+                        break;
+                    }
+                    case 0:
+                    {
+                        break;
+                    }
+
+                    default: cout << "请输入正确数字:" << endl;
+                }
+
+                ofstream bookmessage("Bookmessage.txt", ios::app);
+                if (bookmessage.is_open())
+                {
+                    bookmessage << getCurrentSystemTime();
+                    bookmessage << "操作:修改图书 " << endl;
+                    bookmessage << B[find] << endl;
+                    bookmessage.close();
+                }
+            }
+        }
+    }
 }
 
 void Librarian::Book_Find(Book *B) //查找图书
