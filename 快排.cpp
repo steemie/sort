@@ -2,6 +2,14 @@
 int GetPatition(int arr[], int left, int right)
 {
 
+    //优化一下，加个随机数
+    srand(int(time(0)));
+    int s = rand() % (right - left + 1) + left; // +1是因为，产生的随机数可以取到与这个范围相等的值
+    int tmp = arr[s];
+    arr[s] = arr[left];
+    arr[left] = tmp;
+    //优化结束
+    
     int base = arr[left];
 
 
