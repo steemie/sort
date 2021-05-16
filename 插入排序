@@ -1,0 +1,38 @@
+//为了引出希尔排序
+//参考链接：https://blog.csdn.net/qq_33289077/article/details/90370899
+
+#include<iostream>
+
+using namespace std;
+
+//插入排序原理：把大的放后面
+void InsertSort(int arr[],int len)
+{
+	int tmp;
+	for(int i = 1;i < len;i++)
+	{
+		tmp = arr[i];
+		int j = 0;
+		for(j = i - 1;j>=0 && arr[j] > tmp;j--)
+		{
+			arr[j +1] = arr[j];  //往前遍历，把j的值统一往后挪一个
+		}
+		arr[j+1] = tmp;
+	}
+
+}
+int main()
+{
+	
+	int arr[5] = {34,5,67,8,9};
+	InsertSort(arr,5);
+	for(int i = 0 ;i < 5;i++)
+	{
+		printf("%d ",arr[i]);
+	}
+
+
+	
+	system("pause");
+	return 0;
+}
