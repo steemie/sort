@@ -29,6 +29,27 @@ void InsertSort(int arr[],int len)
 //23,23,56
 //外层给最后一个赋值
 //7,23,56
+
+//在插入排序的基础上研究希尔排序
+//方法：选定增量，选定基础值
+void ShellSort(int arr[],int n)
+{
+    for (int gap = n / 2;gap > 0;gap = gap / 2)
+    {
+        for (int i = gap;i < n;i++)
+        {
+            int j = i;
+            while ((j - gap) >= 0 && arr[j - gap] > arr[j])
+            {
+                //swap
+                int tmp = arr[j - gap];
+                arr[j - gap] = arr[j];
+                arr[j] = tmp;
+                j = j - gap;
+            }
+        }
+    }
+}
 int main()
 {
 	
