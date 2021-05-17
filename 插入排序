@@ -21,6 +21,14 @@ void InsertSort(int arr[],int len)
 	}
 
 }
+//模拟一下
+//tmp = 7
+//j=1 arr[j]=56 > tmp => arr[j+1]=arr[j]=56
+//23,7,56
+//j=0 arr[0]=23 >tmp arr[1] = arr[0];
+//23,23,56
+//外层给最后一个赋值
+//7,23,56
 int main()
 {
 	
